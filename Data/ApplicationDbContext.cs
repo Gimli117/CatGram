@@ -15,10 +15,17 @@ namespace CatGram.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
             builder.Entity<CatProfile>()
                 .HasOne(c => c.ApplicationUser)
                 .WithMany(a => a.CatProfiles)
                 .HasForeignKey(c => c.ApplicationUserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<CatProfile>()
+                .HasMany(c => c.Posts)
+                .WithOne(p => p.CatProfile)
+                .HasForeignKey(p => p.CatProfileId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

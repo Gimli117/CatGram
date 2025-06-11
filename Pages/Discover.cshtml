@@ -1,26 +1,58 @@
 ﻿@page
-@model CatGram.Pages.DiscoverModel
-@{
-    ViewData["Title"] = "Discover New Cats";
-}
+@model DiscoverModel
 
-<h2>😺 Discover Similar Cats</h2>
+<h2>Suggested Cats to Chat With</h2>
 
-@if (Model.SuggestedCats.Any())
+@if (Model.MatchingCats.Any())
 {
-    foreach (var cat in Model.SuggestedCats)
-    {
-        <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 15px;">
-            <img src="@cat.ImagePath" width="200" />
-            <p><strong>@cat.Name</strong></p>
-            <p>Color: @cat.Color</p>
-            <p>Breed: @cat.Breed ?? "Unknown"</p>
-            <p>Age: @(cat.Age?.ToString() ?? "Unknown")</p>
-            <p>Likes to eat: @cat.FoodPreferences ?? "Unknown"</p>
-        </div>
-    }
+    <div class="cat-grid">
+        @foreach (var match in Model.MatchingCats)
+        {
+            <div class="cat-card">
+                <img src="@match.Cat.ImagePath" alt="@match.Cat.Name" class="cat-image" />
+                <p><strong>@match.Cat.Name</strong></p>
+
+                <p><em>Matched with your cat(s):</em></p>
+                <ul>
+                    @foreach (var myCat in match.MatchingMyCats)
+                    {
+                        <li>@myCat.Name</li>
+                    }
+                </ul>
+
+                <p><em>Common fields:</em></p>
+                <ul>
+                    @foreach (var field in match.CommonFields)
+                    {
+                        <li>@field</li>
+                    }
+                </ul>
+            </div>
+        }
+    </div>
 }
 else
 {
-    <p>No cats found 🐾</p>
+    <p>No matches found yet. Try updating your cat's profile or wait for new users to join!</p>
 }
+
+<style>
+    .cat-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .cat-card {
+        border: 1px solid #ccc;
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+        width: 150px;
+        text-align: center;
+    }
+
+    .cat-image {
+        width: 100%;
+        border-radius: 0.5rem;
+    }
+</style>
