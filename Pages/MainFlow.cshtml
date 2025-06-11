@@ -1,0 +1,27 @@
+﻿@page
+@model CatGram.Pages.MainFlowModel
+@{
+    ViewData["Title"] = "Cat Feed";
+}
+
+<div>
+    <a asp-page="/UploadPost" class="btn btn-primary">Create New Post</a>
+</div>
+
+<h2>🐾 Cat Feed</h2>
+
+@if (Model.Posts.Any())
+{
+    @foreach (var post in Model.Posts)
+    {
+        <div>
+            <strong>@post.CatProfile!.Name</strong>
+            <p>@post.Caption</p>
+            <img src="@post.ImagePath" width="300" />
+        </div>
+    }
+}
+else
+{
+    <p>No posts yet!</p>
+}

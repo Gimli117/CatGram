@@ -1,0 +1,18 @@
+﻿@using CatGram.Models
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <form asp-area="Identity" asp-page="/Account/Logout" method="post" id="logoutForm">
+            <button type="submit" class="btn btn-link">Logout</button>
+        </form>
+    }
+    else
+    {
+        <a asp-area="Identity" asp-page="/Account/Login">Login</a>
+        <a asp-area="Identity" asp-page="/Account/Register">Register</a>
+    }
+</ul>

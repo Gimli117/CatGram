@@ -1,0 +1,26 @@
+﻿@page
+@model CatGram.Pages.DiscoverModel
+@{
+    ViewData["Title"] = "Discover New Cats";
+}
+
+<h2>😺 Discover Similar Cats</h2>
+
+@if (Model.SuggestedCats.Any())
+{
+    foreach (var cat in Model.SuggestedCats)
+    {
+        <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 15px;">
+            <img src="@cat.ImagePath" width="200" />
+            <p><strong>@cat.Name</strong></p>
+            <p>Color: @cat.Color</p>
+            <p>Breed: @cat.Breed ?? "Unknown"</p>
+            <p>Age: @(cat.Age?.ToString() ?? "Unknown")</p>
+            <p>Likes to eat: @cat.FoodPreferences ?? "Unknown"</p>
+        </div>
+    }
+}
+else
+{
+    <p>No cats found 🐾</p>
+}

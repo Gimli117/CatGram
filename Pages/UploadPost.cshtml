@@ -1,0 +1,18 @@
+﻿@page
+@model CatGram.Pages.UploadPostModel
+
+<form method="post" enctype="multipart/form-data">
+    <div>
+        <validation-summary asp-validation-summary="All" class="text-danger"></validation-summary>
+        <select asp-for="Post.CatProfileId" asp-items="Model.UserCats">
+            <option value="">-- Select a cat --</option>
+        </select>
+        <label>Caption</label>
+        <input asp-for="Post.Caption" />
+    </div>
+    <div>
+        <label>Upload Image</label>
+        <input type="file" asp-for="ImageUpload" />
+    </div>
+    <button type="submit">Post</button>
+</form>

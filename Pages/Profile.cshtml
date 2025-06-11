@@ -1,0 +1,43 @@
+﻿@page
+@using CatGram.Models
+@model CatGram.Pages.ProfileModel
+@{
+    ViewData["Title"] = "My Cat Profile";
+}
+
+@inject UserManager<ApplicationUser> UserManager
+@{
+    var user = await UserManager.GetUserAsync(User);
+}
+<p>Currently logged in as: @user!.Email</p>
+<p>User Id: @user.Id</p>
+
+<h2>Your Cats</h2>
+
+@if (Model.CatProfiles.Any())
+{
+    foreach (var cat in Model.CatProfiles)
+    {
+        <div>
+            <img src="@cat.ImagePath" width="100" />
+            <p><strong>@cat.Name</strong> — @cat.Breed, Age: @cat.Age</p>
+        </div>
+    }
+}
+else
+{
+    <p>No cats yet. Add your first below!</p>
+}
+
+<hr />
+
+<h3>Add a New Cat</h3>
+<form method="post" enctype="multipart/form-data">
+    <input asp-for="CatProfile.Name" placeholder="Name" required />
+    <input asp-for="CatProfile.Breed" placeholder="Breed" required />
+    <input asp-for="CatProfile.Age" placeholder="Age" type="number" required />
+    <input asp-for="CatProfile.Color" placeholder="Color" />
+    <input asp-for="CatProfile.FoodPreferences" placeholder="Food" />
+    <input asp-for="ImageUpload" type="file" />
+    <button type="submit">Add Cat</button>
+</form>
