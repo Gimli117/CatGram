@@ -1,5 +1,6 @@
 using CatGram.Data;
 using CatGram.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -31,7 +32,7 @@ namespace CatGram.Pages
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
-            if (user == null) return Challenge();
+            if (user == null) return RedirectToPage("/Account/Register");
 
             CatProfiles = await _context.CatProfiles
                 .Where(c => c.ApplicationUserId == user.Id)
@@ -43,7 +44,7 @@ namespace CatGram.Pages
         public async Task<IActionResult> OnPostAsync()
         {
             var user = await _userManager.GetUserAsync(User);
-            if (user == null) return Challenge();
+            if (user == null) return RedirectToPage("/Account/Register");
 
             // Save image
             string? imagePath = null;
