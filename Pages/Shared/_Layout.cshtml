@@ -33,25 +33,6 @@
                         <partial name="_LoginPartial" />
                     </div>
                 </div>
-@*                 <ul class="navbar-nav">
-                    @if (User.Identity?.IsAuthenticated ?? false)
-                    {
-                        <li class="nav-item">
-                            <form method="post" asp-area="Identity" asp-page="/Account/Logout" class="form-inline">
-                                <button type="submit" class="nav-link btn btn-link text-dark" style="border: none;">Log out</button>
-                            </form>
-                        </li>
-                    }
-                    else
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Log in</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
-                        </li>
-                    }
-                </ul> *@
             </div>
         </nav>
     </header>
@@ -72,5 +53,21 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
+
+    @if (!Context.Request.Cookies.ContainsKey("CookieConsent"))
+{
+    <div id="cookie-consent" class="cookie-banner">
+        <p>This site uses cookies. By continuing to browse, you agree to our use of cookies.</p>
+        <button onclick="acceptCookies()">Accept</button>
+    </div>
+
+    <script>
+        function acceptCookies() {
+            document.getElementById('cookie-consent').style.display = 'none';
+            document.cookie = "CookieConsent=true; path=/; max-age=" + 60 * 60 * 24 * 365;
+        }
+    </script>
+}
+
 </body>
 </html>

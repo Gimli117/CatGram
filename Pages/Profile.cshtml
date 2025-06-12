@@ -89,3 +89,27 @@ else
         }
     }
 </script>
+
+<h3>My Posts (via API)</h3>
+<ul id="post-list"></ul>
+
+<script>
+    async function loadMyPosts() {
+        const response = await fetch('/api/posts/myposts');
+        const list = document.getElementById('post-list');
+
+        if (!response.ok) {
+            const error = await response.text();
+            list.innerHTML = `<li>Error loading posts: ${error}</li>`;
+            return;
+        }
+
+        const posts = await response.json();
+        list.innerHTML = '';
+        posts.forEach(p => {
+            const li = document.createElement('li');
+            li.textContent = `${p.caption} (Posted at: ${new Date(p.postedAt).toLocaleString()})`;
+            list.appendChild(li);
+        });
+    }
+</script>
