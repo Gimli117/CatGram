@@ -4,19 +4,16 @@ using CatGram.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace CatGram.Data.Migrations
+namespace CatGram.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250611075941_MoveToAzure")]
-    partial class MoveToAzure
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -127,6 +124,65 @@ namespace CatGram.Data.Migrations
                     b.HasIndex("ApplicationUserId");
 
                     b.ToTable("CatProfiles");
+                });
+
+            modelBuilder.Entity("CatGram.Models.ChatMessage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Message")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ReceiverId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SenderId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("SentAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ChatMessages");
+                });
+
+            modelBuilder.Entity("CatGram.Models.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ParentCommentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("PostedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentCommentId");
+
+                    b.HasIndex("PostId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("CatGram.Models.Post", b =>
@@ -305,6 +361,29 @@ namespace CatGram.Data.Migrations
                     b.Navigation("ApplicationUser");
                 });
 
+            modelBuilder.Entity("CatGram.Models.Comment", b =>
+                {
+                    b.HasOne("CatGram.Models.Comment", "ParentComment")
+                        .WithMany("Replies")
+                        .HasForeignKey("ParentCommentId");
+
+                    b.HasOne("CatGram.Models.Post", "Post")
+                        .WithMany()
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CatGram.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("ParentComment");
+
+                    b.Navigation("Post");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("CatGram.Models.Post", b =>
                 {
                     b.HasOne("CatGram.Models.CatProfile", "CatProfile")
@@ -375,6 +454,11 @@ namespace CatGram.Data.Migrations
             modelBuilder.Entity("CatGram.Models.CatProfile", b =>
                 {
                     b.Navigation("Posts");
+                });
+
+            modelBuilder.Entity("CatGram.Models.Comment", b =>
+                {
+                    b.Navigation("Replies");
                 });
 #pragma warning restore 612, 618
         }

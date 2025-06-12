@@ -1,7 +1,29 @@
 ﻿@page
+@using System.Security.Claims
 @model DiscoverModel
 
 <h2>Suggested Cats to Chat With</h2>
+
+@if (Model.MyCats.Any())
+{
+    <form method="get" asp-page="/Discover" style="margin-bottom:1rem;">
+        <label for="SelectedCatId">Chat as your cat:</label>
+        <select id="SelectedCatId" name="SelectedCatId" onchange="this.form.submit()">
+            <option value="">-- Select your cat --</option>
+            @foreach (var myCat in Model.MyCats)
+            {
+                <option value="@myCat.Id" selected="@(myCat.Id == Model.SelectedCatId)">
+                    @myCat.Name
+                </option>
+            }
+        </select>
+        <input type="hidden" name="ChatWithCatId" value="@Model.ChatWithCatId" />
+    </form>
+}
+else
+{
+    <p>You have no cats registered. Please add cats to chat.</p>
+}
 
 @if (Model.MatchingCats.Any())
 {
@@ -27,6 +49,19 @@
                         <li>@field</li>
                     }
                 </ul>
+
+                @if (Model.SelectedCatId != 0)
+                {
+                    <a asp-page="/Discover" 
+                       asp-route-ChatWithCatId="@match.Cat.Id" 
+                       asp-route-SelectedCatId="@Model.SelectedCatId">
+                        💬 Chat
+                    </a>
+                }
+                else
+                {
+                    <span style="color:gray;">Select your cat above to chat</span>
+                }
             </div>
         }
     </div>
@@ -34,6 +69,33 @@
 else
 {
     <p>No matches found yet. Try updating your cat's profile or wait for new users to join!</p>
+}
+
+@if (Model.ChatWithCat != null && Model.SelectedCat != null)
+{
+    <hr />
+    <h3>Chat between @Model.SelectedCat.Name and @Model.ChatWithCat.Name</h3>
+    <div>
+        @foreach (var msg in Model.Messages)
+        {
+            <div style="margin-bottom:10px;">
+                <strong>@(msg.SenderId == Model.SelectedCat.Id ? "You" : "Them")</strong>
+                @msg.Message <br />
+                <small>@msg.SentAt.ToLocalTime().ToString("g")</small>
+            </div>
+        }
+    </div>
+
+    <form method="post" asp-page-handler="SendMessage">
+        <input type="hidden" asp-for="ChatWithCatId" />
+        <input type="hidden" asp-for="SelectedCatId" />
+        <textarea asp-for="MessageText" rows="2" cols="40" placeholder="Type your message..."></textarea><br />
+        <button type="submit">Send</button>
+    </form>
+}
+else
+{
+    <p>No chat selected.</p>
 }
 
 <style>

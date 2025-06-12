@@ -12,6 +12,7 @@ namespace CatGram.Data
         public DbSet<CatProfile> CatProfiles { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<ChatMessage> ChatMessages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

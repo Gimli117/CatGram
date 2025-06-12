@@ -33,7 +33,7 @@ namespace CatGram.Pages
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
-            if (user == null) return RedirectToPage("/Account/Register");
+            if (user == null) return RedirectToPage("/Identity/Account/Register");
 
             CatProfiles = await _context.CatProfiles
                 .Where(c => c.ApplicationUserId == user.Id)
@@ -45,7 +45,7 @@ namespace CatGram.Pages
         public async Task<IActionResult> OnPostAsync()
         {
             var user = await _userManager.GetUserAsync(User);
-            if (user == null) return RedirectToPage("/Account/Register");
+            if (user == null) return RedirectToPage("/Identity/Account/Register");
 
             // Update existing cats
             foreach (var updatedCat in CatProfiles)
@@ -89,7 +89,7 @@ namespace CatGram.Pages
         public async Task<IActionResult> OnPostSaveAsync()
         {
             var user = await _userManager.GetUserAsync(User);
-            if (user == null) return RedirectToPage("/Account/Register");
+            if (user == null) return RedirectToPage("/Identity/Account/Register");
 
             foreach (var cat in CatProfiles)
             {
@@ -113,7 +113,7 @@ namespace CatGram.Pages
         public async Task<IActionResult> OnPostDeleteAsync(int id)
         {
             var user = await _userManager.GetUserAsync(User);
-            if (user == null) return RedirectToPage("/Account/Register");
+            if (user == null) return RedirectToPage("/Identity/Account/Register");
 
             var cat = await _context.CatProfiles
                 .Include(c => c.Posts)
