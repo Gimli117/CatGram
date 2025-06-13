@@ -27,9 +27,12 @@
                     <ul>
                         @foreach (var comment in post.Comments.OrderByDescending(c => c.PostedAt))
                         {
+                            var swedenTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
+                            var swedenTime = TimeZoneInfo.ConvertTimeFromUtc(comment.PostedAt, swedenTimeZone);
+
                             <li>
                                 <b>@comment.ApplicationUser?.UserName</b>: @comment.Content
-                                <small> (@comment.PostedAt.ToLocalTime().ToString("g"))</small>
+                                <small> (@swedenTime.ToString("g"))</small>
                             </li>
                         }
                     </ul>
