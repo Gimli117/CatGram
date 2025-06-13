@@ -18,12 +18,6 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
   </ItemGroup>
 
-	<ItemGroup>
-		<Content Include="wwwroot\images\**\*.*">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-	</ItemGroup>
-
   <ItemGroup>
     <Folder Include="Data\Migrations\" />
     <Folder Include="wwwroot\images\" />
