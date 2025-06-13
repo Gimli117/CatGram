@@ -63,12 +63,12 @@ namespace CatGram
 
             app.UseRouting();
 
+            app.UseSession();
+
             app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();
-
-            app.UseSession();
             app.MapRazorPages();
             app.Run();
         }
