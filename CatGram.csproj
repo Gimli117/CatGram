@@ -17,10 +17,6 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
   </ItemGroup>
 
-	<PropertyGroup>
-		<EnableDefaultContentItems>false</EnableDefaultContentItems>
-	</PropertyGroup>
-
 	<ItemGroup>
 		<Content Include="wwwroot\images\**\*.*">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
