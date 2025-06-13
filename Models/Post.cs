@@ -12,5 +12,6 @@ namespace CatGram.Models
         public DateTime PostedAt { get; set; }
         public int CatProfileId { get; set; }
         public CatProfile? CatProfile { get; set; }
+        public List<Comment>? Comments { get; set; }
     }
 }

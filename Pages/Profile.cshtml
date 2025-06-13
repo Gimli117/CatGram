@@ -95,7 +95,9 @@ else
 
 <script>
     async function loadMyPosts() {
-        const response = await fetch('/api/posts/myposts');
+        const response = await fetch('/api/posts/myposts', {
+            credentials: 'include'
+        });
         const list = document.getElementById('post-list');
 
         if (!response.ok) {
@@ -104,7 +106,17 @@ else
             return;
         }
 
-        const posts = await response.json();
+        const data = await response.json();  // Parse JSON from the response
+        console.log('Raw API response:', data);
+
+        // Assuming your API returns an object like { posts: [...] }
+        const posts = data.$values;
+
+        if (!Array.isArray(posts)) {
+            list.innerHTML = `<li>No posts found or data format incorrect.</li>`;
+            return;
+        }
+
         list.innerHTML = '';
         posts.forEach(p => {
             const li = document.createElement('li');
@@ -112,4 +124,7 @@ else
             list.appendChild(li);
         });
     }
+
+    // 🚀 Load posts when page is ready
+    window.addEventListener('DOMContentLoaded', loadMyPosts);
 </script>

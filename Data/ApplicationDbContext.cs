@@ -29,6 +29,12 @@ namespace CatGram.Data
                 .WithOne(p => p.CatProfile)
                 .HasForeignKey(p => p.CatProfileId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Comment>()
+                .HasOne(c => c.ParentComment)
+                .WithMany(c => c.Replies)
+                .HasForeignKey(c => c.ParentCommentId)
+                .OnDelete(DeleteBehavior.Restrict); // avoid circular cascade delete
         }
     }
 }

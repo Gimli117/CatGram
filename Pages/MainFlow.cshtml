@@ -14,10 +14,38 @@
 {
     @foreach (var post in Model.Posts)
     {
-        <div>
+        <div style="border: 1px solid #ccc; padding: 1rem; margin-bottom: 1rem;">
             <strong>@post.CatProfile!.Name</strong>
             <p>@post.Caption</p>
             <img src="@post.ImagePath" width="300" />
+
+            <!-- Show comments -->
+            <div style="margin-top: 1rem;">
+                <h4>Comments:</h4>
+                @if (post.Comments != null && post.Comments.Any())
+                {
+                    <ul>
+                        @foreach (var comment in post.Comments.OrderByDescending(c => c.PostedAt))
+                        {
+                            <li>
+                                <b>@comment.ApplicationUser?.UserName</b>: @comment.Content
+                                <small> (@comment.PostedAt.ToShortTimeString())</small>
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p>No comments yet.</p>
+                }
+            </div>
+
+            <!-- Comment form -->
+            <form method="post">
+                <input type="hidden" name="PostId" value="@post.Id" />
+                <textarea name="Content" rows="2" placeholder="Write a comment..." required style="width: 100%;"></textarea>
+                <button type="submit" class="btn btn-sm btn-primary mt-1">Comment</button>
+            </form>
         </div>
     }
 }

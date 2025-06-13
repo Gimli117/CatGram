@@ -39,6 +39,13 @@ namespace CatGram
 
             builder.Services.AddSession();
 
+            builder.Services.AddControllers()
+                .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+                options.JsonSerializerOptions.MaxDepth = 64; // optional, to allow deeper nesting
+            });
+
             var app = builder.Build();
 
             if (app.Environment.IsDevelopment())
@@ -58,6 +65,8 @@ namespace CatGram
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.MapControllers();
 
             app.UseSession();
             app.MapRazorPages();

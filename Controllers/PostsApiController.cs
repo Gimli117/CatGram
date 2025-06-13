@@ -22,7 +22,7 @@ namespace CatGram.Controllers
             _userManager = userManager;
         }
 
-        [HttpGet("MyPosts")]
+        [HttpGet("myposts")]
         public async Task<IActionResult> GetMyPosts()
         {
             var userId = _userManager.GetUserId(User);
