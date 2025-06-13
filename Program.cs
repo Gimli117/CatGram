@@ -77,6 +77,8 @@ namespace CatGram
                 db.Database.Migrate();
             }
 
+            app.UseDeveloperExceptionPage();
+
             app.Run();
         }
     }
