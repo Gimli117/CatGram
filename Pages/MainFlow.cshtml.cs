@@ -40,7 +40,7 @@ namespace CatGram.Pages
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
-                return RedirectToPage("/Account/Login");
+                return RedirectToPage("/Identity/Account/Register");
 
             var comment = new Comment
             {

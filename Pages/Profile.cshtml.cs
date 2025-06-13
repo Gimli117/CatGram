@@ -33,11 +33,19 @@ namespace CatGram.Pages
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
-            if (user == null) return RedirectToPage("/Identity/Account/Register");
+            if (user == null)
+                return RedirectToPage("/Identity/Account/Register");
 
             CatProfiles = await _context.CatProfiles
                 .Where(c => c.ApplicationUserId == user.Id)
+                .Include(c => c.Posts) // Eager-load related posts
                 .ToListAsync();
+
+            // Optional: sort posts by date if needed per profile
+            foreach (var cat in CatProfiles)
+            {
+                cat.Posts = cat.Posts.OrderByDescending(p => p.PostedAt).ToList();
+            }
 
             return Page();
         }
