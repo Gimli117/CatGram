@@ -29,7 +29,7 @@
                         {
                             <li>
                                 <b>@comment.ApplicationUser?.UserName</b>: @comment.Content
-                                <small> (@comment.PostedAt.ToLocalTime())</small>
+                                <small> (@comment.PostedAt.ToLocalTime().ToString("g"))</small>
                             </li>
                         }
                     </ul>
